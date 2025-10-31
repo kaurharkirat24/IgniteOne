@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IgniteOne | Crowdfunding Platform for Campus Innovation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      color: #222;
+      background-color: #fdfdfd;
+      scroll-behavior: smooth;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      width: 100%;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ff5722;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    /* Navbar buttons */
+    nav ul li a.nav-btn {
+      display: inline-block;
+      padding: 0.5rem 1.2rem;
+      background: linear-gradient(135deg, #ff5722, #ff8a50);
+      color: white;
+      border-radius: 25px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      text-decoration: none;
+    }
+
+    nav ul li a.nav-btn:hover {
+      background: linear-gradient(135deg, #ff8a50, #ff5722);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1950&q=80') no-repeat center/cover;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 10%;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      max-width: 800px;
+      line-height: 1.3;
+    }
+
+    .hero p {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      max-width: 650px;
+      opacity: 0.9;
+    }
+
+    .hero button {
+      margin-top: 2rem;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      background-color: #ff5722;
+      border: none;
+      color: white;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .hero button:hover {
+      background-color: #e64a19;
+    }
+
+    /* Sections */
+    section {
+      padding: 5rem 10%;
+      text-align: center;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-8px);
+    }
+
+    .feature h3 {
+      color: #ff5722;
+      margin-bottom: 1rem;
+    }
+
+    /* Recruiter Section */
+    .recruiter {
+      background: #ffede7;
+      border-radius: 15px;
+      padding: 3rem 2rem;
+    }
+
+    /* Footer */
+    footer {
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    footer p {
+      opacity: 0.8;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 1rem; }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">IgniteOne</div>
+    <ul>
+      <li><a href="login.jsp" class="nav-btn">Login / Register</a></li>
+      <li><a href="about.jsp" class="nav-btn">About</a></li>
+      <li><a href="student_dashboard.jsp" class="nav-btn">Students</a></li>
+      <li><a href="recruiters_dashboard.jsp" class="nav-btn">Recruiters</a></li>
+      <li><a href="contact.jsp" class="nav-btn">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <h1>Empowering Campus Innovation through Crowdfunding & Collaboration</h1>
+    <p>Showcase your projects. Get funded. Get noticed by recruiters. Ignite your ideas with IgniteOne.</p>
+    <button onclick="scrollToSection('features')">Explore Features</button>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <h2>About IgniteOne</h2>
+    <p style="max-width:800px; margin: 1.5rem auto;">
+      IgniteOne is a web-based crowdfunding and project showcase platform built for students, alumni, and recruiters.
+      It allows students to pitch innovative ideas, receive funding support, and gain visibility among potential mentors and employers.
+      Recruiters can discover talented individuals and support real-world innovation right from campus.
+    </p>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features">
+    <h2>Key Features</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>💡 Project Showcasing</h3>
+        <p>Upload your project details, media, and tech stack. Let the world see your innovation.</p>
+      </div>
+      <div class="feature">
+        <h3>💰 Crowdfunding</h3>
+        <p>Receive small donations from peers, alumni, and sponsors to bring your ideas to life.</p>
+      </div>
+      <div class="feature">
+        <h3>🎯 Recruiter Connect</h3>
+        <p>Companies can browse projects and connect with students for internships and opportunities.</p>
+      </div>
+      <div class="feature">
+        <h3>🤝 Alumni Mentorship</h3>
+        <p>Alumni can fund or mentor projects, strengthening the bond within the campus community.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recruiter Section -->
+  <section id="recruiter" class="recruiter">
+    <h2>For Recruiters & Sponsors</h2>
+    <p style="max-width:800px; margin: 1rem auto;">
+      Discover top student talent through their real-world projects, not just resumes.  
+      Offer short-term internships, mentorships, or sponsorships to innovative teams that align with your company’s goals.
+    </p>
+    <button style="margin-top: 1.5rem; background:#ff5722; border:none; padding:1rem 2rem; border-radius:25px; color:white; cursor:pointer;">
+      Join as a Recruiter
+    </button>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <p>© 2025 IgniteOne. All rights reserved. | Harkirat & Ashutosh</p>
+  </footer>
+
+  <script>
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Navbar shadow toggle on scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      nav.style.boxShadow = window.scrollY > 50 ? '0 2px 10px rgba(0,0,0,0.15)' : '0 2px 8px rgba(0,0,0,0.1)';
+    });
+  </script>
+</body>
+</html>
