@@ -16,26 +16,34 @@
     }
 
     body {
-      background: linear-gradient(to right, #ff774c, #ff5722);
+      background: #f9f9fb;
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
+      padding: 40px 0;
       color: #333;
     }
 
     .profile-container {
-      width: 90%;
-      max-width: 950px;
+      width: 95%;
+      max-width: 1000px;
       background: white;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       overflow: hidden;
       display: flex;
       flex-wrap: wrap;
       position: relative;
+      animation: fadeIn 0.8s ease;
     }
 
+    @keyframes fadeIn {
+      from {opacity:0; transform: translateY(20px);}
+      to {opacity:1; transform: translateY(0);}
+    }
+
+    /* LEFT PANEL */
     .left-panel {
       flex: 1 1 35%;
       background: url('https://images.unsplash.com/photo-1522199710521-72d69614c702?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
@@ -68,6 +76,11 @@
       object-fit: cover;
       margin-bottom: 1rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.05);
     }
 
     .left-panel-content h2 {
@@ -80,6 +93,7 @@
       opacity: 0.9;
     }
 
+    /* RIGHT PANEL */
     .right-panel {
       flex: 1 1 65%;
       padding: 2rem;
@@ -136,6 +150,7 @@
       transform: translateY(-2px);
     }
 
+    /* STATS SECTION */
     .stats {
       display: flex;
       justify-content: space-between;
@@ -171,6 +186,59 @@
     .stat-label {
       color: #555;
       font-size: 0.9rem;
+    }
+
+    /* REGISTERED USERS / COMPANIES TABS */
+    .tabs-container {
+      margin-top: 2rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1px solid #ff5722;
+      background: white;
+      color: #ff5722;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .tab.active {
+      background: #ff5722;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    table th {
+      color: #ff5722;
+      font-weight: 600;
     }
 
     @media (max-width: 800px) {
@@ -221,7 +289,7 @@
         </select>
 
         <label>About Me</label>
-        <textarea rows="3" placeholder="A short description about yourself...">Passionate developer and researcher focused on AI and community innovation.</textarea>
+        <textarea rows="3">Passionate developer and researcher focused on AI and community innovation.</textarea>
 
         <button type="submit" class="update-btn">Update Profile</button>
       </form>
@@ -241,17 +309,32 @@
           <div class="stat-label">Donations Made</div>
         </div>
       </div>
+
     </div>
   </div>
 
   <script>
-    // Success message simulation
+    // Profile form submit simulation
     const form = document.querySelector("form");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       alert("Profile updated successfully!");
     });
-  </script>
 
+    // Tabs functionality
+    const tabs = document.querySelectorAll(".tab");
+    const contents = document.querySelectorAll(".tab-content");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        const target = tab.dataset.tab;
+        contents.forEach(c => c.classList.remove("active"));
+        document.getElementById(target).classList.add("active");
+      });
+    });
+  </script>
 </body>
 </html>

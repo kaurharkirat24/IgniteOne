@@ -223,7 +223,7 @@
     <a href="#">Search Talent</a>
     <a href="#">Shortlisted</a>
     <a href="#">Post Internship</a>
-    <a href="#">Profile</a>
+    <a href="profile.jsp">Profile</a>
     <a href="#">Logout</a>
   </div>
 

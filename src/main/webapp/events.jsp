@@ -171,8 +171,13 @@
       font-weight: 500;
     }
 
-    .support-btn {
-      margin-top: 1rem;
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .support-btn, .calendar-btn {
       background: #ff5722;
       border: none;
       color: white;
@@ -182,10 +187,21 @@
       cursor: pointer;
       width: 100%;
       transition: 0.3s;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+    }
+
+    .calendar-btn {
+      background: #1976d2;
     }
 
     .support-btn:hover {
       background: #e64a19;
+    }
+
+    .calendar-btn:hover {
+      background: #0d47a1;
     }
 
     /* Footer */
@@ -198,7 +214,7 @@
     }
 
     @media (max-width: 768px) {
-      .filters input { width: 100%; }
+      .filters input, .filters select { width: 100%; }
     }
   </style>
 </head>
@@ -211,7 +227,7 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="project_showcase.jsp">Projects</a></li>
       <li><a href="events.jsp" class="active">Events</a></li>
-      <li><a href="login.html">Login</a></li>
+      <li><a href="login.jsp">Login</a></li>
     </ul>
   </nav>
 
@@ -224,12 +240,12 @@
   <!-- Filter Section -->
   <div class="filters">
     <input type="text" id="searchEvent" placeholder="Search events...">
-    <select id="eventType">
-      <option value="all">All Types</option>
-      <option value="hackathon">Hackathon</option>
-      <option value="seminar">Seminar</option>
-      <option value="fest">Fest</option>
-      <option value="workshop">Workshop</option>
+    <input type="date" id="eventDate">
+    <select id="dateCategory">
+      <option value="all">All Events</option>
+      <option value="upcoming">Upcoming</option>
+      <option value="past">Past</option>
+      <option value="thisMonth">This Month</option>
     </select>
     <button id="filterBtn">Search</button>
   </div>
@@ -242,8 +258,11 @@
       <div class="card-content">
         <h3>Hackathon '25</h3>
         <p>48-hour coding challenge where students build innovative real-world tech solutions.</p>
-        <div class="event-date">📅 18 Dec 2025 | Venue: Main Auditorium</div>
-        <button class="support-btn" onclick="registerEvent('Hackathon 25')">📝 Register / Participate</button>
+        <div class="event-date" data-date="2025-12-18">📅 18 Dec 2025 | Venue: Main Auditorium</div>
+        <div class="btn-group">
+          <button class="support-btn" onclick="registerEvent('Hackathon 25')">📝 Register / Participate</button>
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Hackathon+25&dates=20251218/20251219&details=Join+us+for+a+48-hour+coding+challenge&location=Main+Auditorium" target="_blank" class="calendar-btn">📅 Add to Calendar</a>
+        </div>
       </div>
     </div>
 
@@ -252,8 +271,11 @@
       <div class="card-content">
         <h3>TechFest 2025</h3>
         <p>Our annual technology fest celebrating innovation, creativity, and collaboration.</p>
-        <div class="event-date">📅 12 Nov 2025 | Venue: CS Department Grounds</div>
-        <button class="support-btn" onclick="registerEvent('TechFest 2025')">📝 Register / Participate</button>
+        <div class="event-date" data-date="2025-11-12">📅 12 Nov 2025 | Venue: CS Department Grounds</div>
+        <div class="btn-group">
+          <button class="support-btn" onclick="registerEvent('TechFest 2025')">📝 Register / Participate</button>
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=TechFest+2025&dates=20251112/20251113&details=Join+the+biggest+tech+celebration+of+the+year&location=CS+Department+Grounds" target="_blank" class="calendar-btn">📅 Add to Calendar</a>
+        </div>
       </div>
     </div>
 
@@ -262,8 +284,11 @@
       <div class="card-content">
         <h3>AI Workshop</h3>
         <p>Hands-on session introducing machine learning basics and real-world project building.</p>
-        <div class="event-date">📅 27 Oct 2025 | Venue: Lab 3</div>
-        <button class="support-btn" onclick="registerEvent('AI Workshop')">📝 Register / Participate</button>
+        <div class="event-date" data-date="2025-10-27">📅 27 Oct 2025 | Venue: Lab 3</div>
+        <div class="btn-group">
+          <button class="support-btn" onclick="registerEvent('AI Workshop')">📝 Register / Participate</button>
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=AI+Workshop&dates=20251027/20251028&details=Hands-on+machine+learning+session&location=Lab+3" target="_blank" class="calendar-btn">📅 Add to Calendar</a>
+        </div>
       </div>
     </div>
 
@@ -275,28 +300,44 @@
   </footer>
 
   <script>
-    // Filtering Functionality
     const filterBtn = document.getElementById("filterBtn");
-    const eventType = document.getElementById("eventType");
     const searchEvent = document.getElementById("searchEvent");
+    const eventDate = document.getElementById("eventDate");
+    const dateCategory = document.getElementById("dateCategory");
     const eventCards = document.querySelectorAll(".event-card");
 
-    filterBtn.addEventListener("click", () => {
+    filterBtn.addEventListener("click", () => filterEvents());
+
+    function filterEvents() {
       const term = searchEvent.value.toLowerCase();
-      const type = eventType.value;
+      const selectedDate = eventDate.value;
+      const category = dateCategory.value;
+      const today = new Date();
 
       eventCards.forEach(card => {
         const title = card.querySelector("h3").textContent.toLowerCase();
         const desc = card.querySelector("p").textContent.toLowerCase();
-        const matchText = title.includes(term) || desc.includes(term);
-        const matchType = type === "all" || card.dataset.type === type;
-        card.style.display = (matchText && matchType) ? "block" : "none";
-      });
-    });
+        const eventISO = card.querySelector(".event-date").dataset.date;
+        const eventDay = new Date(eventISO);
 
-    // Registration function
+        const matchText = title.includes(term) || desc.includes(term);
+        let matchDate = true;
+
+        if (selectedDate) {
+          matchDate = eventISO === selectedDate;
+        } else if (category === "upcoming") {
+          matchDate = eventDay > today;
+        } else if (category === "past") {
+          matchDate = eventDay < today;
+        } else if (category === "thisMonth") {
+          matchDate = (eventDay.getMonth() === today.getMonth() && eventDay.getFullYear() === today.getFullYear());
+        }
+
+        card.style.display = (matchText && matchDate) ? "block" : "none";
+      });
+    }
+
     function registerEvent(name) {
-      alert("You are registering for " + name + "! 🎉 Redirecting to registration page...");
       window.location.href = "register_event.jsp?event=" + encodeURIComponent(name);
     }
   </script>

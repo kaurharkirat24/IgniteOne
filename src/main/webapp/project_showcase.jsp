@@ -75,7 +75,7 @@
     .hero {
       text-align: center;
       padding: 4rem 1rem;
-      background: radial-gradient(circle at center, #ff7043, #EFC4AF);
+      background: radial-gradient(circle at center, #ff7a47, #ff5722);
       color: white;
       animation: fadeIn 1s ease;
     }
@@ -260,7 +260,7 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="project_showcase.jsp" class="active">Projects</a></li>
       <li><a href="events.jsp">Events</a></li>
-      <li><a href="login.html">Login</a></li>
+      <li><a href="login.jsp">Login</a></li>
     </ul>
   </nav>
 

@@ -280,7 +280,7 @@
     <a href="#">My Projects</a>
     <a href="#">Funding</a>
     <a href="#">Notifications</a>
-    <a href="#">Profile</a>
+    <a href="profile.jsp">Profile</a>
     <a href="#">Logout</a>
   </div>
 

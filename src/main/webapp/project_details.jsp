@@ -258,7 +258,7 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="project_showcase.jsp">Projects</a></li>
       <li><a href="#">Events</a></li>
-      <li><a href="login.html">Login</a></li>
+      <li><a href="login.jsp">Login</a></li>
     </ul>
   </nav>
 
