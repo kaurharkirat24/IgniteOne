@@ -224,7 +224,7 @@
     <a href="#">Shortlisted</a>
     <a href="#">Post Internship</a>
     <a href="/profile">Profile</a>
-    <a href="#">Logout</a>
+    <a href="/logout">Logout</a>
   </div>
 
   <!-- Main Content -->

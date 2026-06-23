@@ -246,8 +246,8 @@
     <a href="#project-approval">Project Approval</a>
     <a href="#donation-tracking">Donation Tracking</a>
     <a href="#event-showcase">Event Showcase</a>
-    <a href="#reports">Reports</a>
-    <a href="#logout" id="logout-link">Logout</a>
+    <a href="/profile">Profile</a>
+    <a href="/logout">Logout</a>
   </div>
 
   <!-- Main Content -->
@@ -378,12 +378,6 @@
         links.forEach(l => l.classList.remove("active"));
         this.classList.add("active");
       });
-    });
-
-    // Logout behavior (demo)
-    document.getElementById("logout-link").addEventListener("click", e => {
-      e.preventDefault();
-      alert("Logged out successfully!");
     });
   </script>
 </body>

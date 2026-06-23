@@ -25,6 +25,7 @@ public class AuthController {
     public String processLogin(@RequestParam("username") String username,
                                @RequestParam("password") String password,
                                @RequestParam("role") String role,
+                               @RequestParam(value = "email", required = false) String email,
                                HttpSession session,
                                Model model) {
         
@@ -37,7 +38,7 @@ public class AuthController {
             user = new User();
             user.setUsername(username);
             user.setPassword(password); // insecure, but ok for demo
-            user.setEmail(username + "@test.com");
+            user.setEmail(email != null && !email.isEmpty() ? email : username + "@test.com");
             user.setRole(role);
             user = userService.registerUser(user);
         }
@@ -59,6 +60,6 @@ public class AuthController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/login";
+        return "redirect:/";
     }
 }

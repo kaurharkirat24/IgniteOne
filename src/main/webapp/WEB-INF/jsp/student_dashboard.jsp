@@ -281,8 +281,8 @@
     <a href="#">My Projects</a>
     <a href="#">Funding</a>
     <a href="#">Notifications</a>
-    <a href="/profile">Profile</a>
-    <a href="#">Logout</a>
+    <a href="#">Profile</a>
+    <a href="/logout">Logout</a>
   </div>
 
   <!-- Main Content -->
@@ -332,11 +332,7 @@
     <!-- Notifications Section -->
     <section id="notifications" class="section">
       <h2>Notifications</h2>
-      <ul>
-        <li>🎉 Your project “AI Chatbot” received ₹1,000 funding!</li>
-        <li>📢 New hackathon announced on campus.</li>
-        <li>💡 “Smart Waste Segregator” reached 50% goal.</li>
-      </ul>
+      <p>No new notifications at this time.</p>
     </section>
 
     <!-- Profile Section -->
@@ -347,11 +343,6 @@
       <p><strong>Email:</strong> ${user.email}</p>
     </section>
 
-    <!-- Logout Section -->
-    <section id="logout" class="section">
-      <h2>Logout</h2>
-      <p>You have been logged out successfully.</p>
-    </section>
   </div>
 
   <!-- Add Project Floating Button -->
