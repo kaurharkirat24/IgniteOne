@@ -52,6 +52,12 @@
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
         </dependency>
         
+        <dependency>
+            <groupId>me.paulschwarz</groupId>
+            <artifactId>spring-dotenv</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
         <!-- DevTools for automatic restarts -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

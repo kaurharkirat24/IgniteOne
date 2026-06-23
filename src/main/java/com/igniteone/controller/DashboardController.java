@@ -21,7 +21,7 @@ public class DashboardController {
 
     @GetMapping("/")
     public String home() {
-        return "index.html"; // Static or mapped resource
+        return "index"; // Maps to /WEB-INF/jsp/index.jsp
     }
 
     @GetMapping("/student_dashboard")
