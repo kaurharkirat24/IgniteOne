@@ -170,11 +170,11 @@
   <nav>
     <div class="logo">IgniteOne</div>
     <ul>
-      <li><a href="login.jsp" class="nav-btn">Login / Register</a></li>
-      <li><a href="project_showcase.jsp" class="nav-btn">Browse Projects</a></li>
-      <li><a href="events.jsp" class="nav-btn">Events</a></li>
-      <li><a href="about.jsp" class="nav-btn">About</a></li>
-      <li><a href="contact.jsp" class="nav-btn">Contact</a></li>
+      <li><a href="/login" class="nav-btn">Login / Register</a></li>
+      <li><a href="/project_showcase" class="nav-btn">Browse Projects</a></li>
+      <li><a href="/events" class="nav-btn">Events</a></li>
+      <li><a href="/about" class="nav-btn">About</a></li>
+      <li><a href="/contact" class="nav-btn">Contact</a></li>
     </ul>
   </nav>
 
@@ -226,7 +226,7 @@
       Offer short-term internships, mentorships, or sponsorships to innovative teams that align with your company’s goals.
     </p>
     
-    <a href="login.jsp">
+    <a href="/login">
     <button style="margin-top: 1.5rem; background:#ff5722; border:none; padding:1rem 2rem; border-radius:25px; color:white; cursor:pointer;">
       Join as a Recruiter
     </button>

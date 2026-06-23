@@ -255,10 +255,10 @@
   <nav>
     <div class="logo">IgniteOne</div>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="project_showcase.jsp">Projects</a></li>
-      <li><a href="#">Events</a></li>
-      <li><a href="login.jsp">Login</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/project_showcase">Projects</a></li>
+      <li><a href="/events">Events</a></li>
+      <li><a href="/login">Login</a></li>
     </ul>
   </nav>
 

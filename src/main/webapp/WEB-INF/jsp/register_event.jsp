@@ -160,9 +160,9 @@
   <nav>
     <div class="logo">IgniteOne</div>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="project_showcase.jsp">Projects</a></li>
-      <li><a href="events.jsp" class="active">Events</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/project_showcase">Projects</a></li>
+      <li><a href="/events" class="active">Events</a></li>
       <li><a href="login.html">Login</a></li>
     </ul>
   </nav>
@@ -206,7 +206,7 @@
       <button type="submit" class="register-btn">Submit Registration</button>
     </form>
 
-    <a href="events.jsp" class="back-btn">← Back to Events</a>
+    <a href="/events" class="back-btn">← Back to Events</a>
   </div>
 
   <footer>

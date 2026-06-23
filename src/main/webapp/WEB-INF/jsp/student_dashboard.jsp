@@ -276,12 +276,12 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <h2>IgniteOne</h2>
-    <a href="index.html">Home</a>
+    <a href="/">Home</a>
     <a href="#" class="active">Dashboard</a>
     <a href="#">My Projects</a>
     <a href="#">Funding</a>
     <a href="#">Notifications</a>
-    <a href="profile.jsp">Profile</a>
+    <a href="/profile">Profile</a>
     <a href="#">Logout</a>
   </div>
 

@@ -218,12 +218,12 @@
   <div class="sidebar">
     <h2>IgniteOne</h2>
     <a href="#" class="active">Dashboard</a>
-    <a href="index.html">Home</a>
-    <a href="project_showcase.jsp">Browse Projects</a>
+    <a href="/">Home</a>
+    <a href="/project_showcase">Browse Projects</a>
     <a href="#">Search Talent</a>
     <a href="#">Shortlisted</a>
     <a href="#">Post Internship</a>
-    <a href="profile.jsp">Profile</a>
+    <a href="/profile">Profile</a>
     <a href="#">Logout</a>
   </div>
 

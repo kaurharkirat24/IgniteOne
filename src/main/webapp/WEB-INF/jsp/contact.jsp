@@ -212,10 +212,10 @@
   <nav>
     <div class="logo">IgniteOne</div>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="project_showcase.jsp">Projects</a></li>
-      <li><a href="events.jsp">Events</a></li>
-      <li><a href="contact.jsp" class="active">Contact</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/project_showcase">Projects</a></li>
+      <li><a href="/events">Events</a></li>
+      <li><a href="/contact" class="active">Contact</a></li>
     </ul>
   </nav>
 
