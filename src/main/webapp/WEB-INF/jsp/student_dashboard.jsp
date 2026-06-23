@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -287,7 +288,7 @@
   <!-- Main Content -->
   <div class="main-content">
     <div class="header">
-      <h1>Welcome, Harkirat 👋</h1>
+      <h1>Welcome, <c:out value="${user.username}" default="Harkirat"/> 👋</h1>
       <div class="profile">
         <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&w=500&q=80" alt="profile" />
         <span>Student</span>
@@ -298,33 +299,20 @@
     <section id="dashboard" class="section active">
       <h2>Your Projects</h2>
       <div class="cards">
+        <c:forEach var="project" items="${projects}">
         <div class="card">
-          <img src="https://media.istockphoto.com/id/1494104649/photo/ai-chatbot-artificial-intelligence-digital-concept.webp?a=1&b=1&s=612x612&w=0&k=20&c=bSNvWwiLdPpa57uxQdncwcpu9Xt-NJSsmIBMxNxLQfw=" alt="AI Project" />
+          <img src="<c:out value='${project.imageUrl}' default='https://media.istockphoto.com/id/1494104649/photo/ai-chatbot-artificial-intelligence-digital-concept.webp?a=1&b=1&s=612x612&w=0&k=20&c=bSNvWwiLdPpa57uxQdncwcpu9Xt-NJSsmIBMxNxLQfw='/>" alt="Project Image" />
           <div class="card-content">
-            <h3>AI Chatbot Assistant</h3>
-            <p>An intelligent chatbot built with NLP for student helpdesk automation.</p>
-            <div class="progress-bar"><div class="progress-fill" style="width: 70%;"></div></div>
-            <div class="funding"><span>₹7,000 raised</span><span>Goal: ₹10,000</span></div>
+            <h3><c:out value="${project.title}"/></h3>
+            <p><c:out value="${project.description}"/></p>
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="funding"><span>₹<c:out value="${project.currentFunding}"/> raised</span><span>Goal: ₹<c:out value="${project.fundingGoal}"/></span></div>
           </div>
         </div>
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=800&q=80" alt="IoT Project" />
-          <div class="card-content">
-            <h3>Smart Waste Segregator</h3>
-            <p>IoT-based automatic waste sorter using ultrasonic sensors.</p>
-            <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
-            <div class="funding"><span>₹5,000 raised</span><span>Goal: ₹10,000</span></div>
-          </div>
-        </div>
-        <div class="card">
-          <img src="https://media.istockphoto.com/id/1486287149/photo/group-of-multiracial-asian-business-participants-casual-chat-after-successful-conference-event.webp?a=1&b=1&s=612x612&w=0&k=20&c=w6LTgtP8zZnJgg9g7jemKYcmAWjv4lxNlPyZ-PjVwkE=" alt="Web Project" />
-          <div class="card-content">
-            <h3>Campus Event Portal</h3>
-            <p>Web app to organize and manage all university events digitally.</p>
-            <div class="progress-bar"><div class="progress-fill" style="width: 90%;"></div></div>
-            <div class="funding"><span>₹9,000 raised</span><span>Goal: ₹10,000</span></div>
-          </div>
-        </div>
+        </c:forEach>
+        <c:if test="${empty projects}">
+          <p>No projects found. Add one below!</p>
+        </c:if>
       </div>
     </section>
 
@@ -374,11 +362,13 @@
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
       <h3>Add New Project</h3>
-      <input id="projectTitle" type="text" placeholder="Project Title" required />
-      <textarea id="projectDesc" rows="3" placeholder="Project Description" required></textarea>
-      <input id="projectGoal" type="number" placeholder="Funding Goal (₹)" required />
-      <input id="projectImg" type="url" placeholder="Project Image URL (optional)" />
-      <button id="modalAddBtn">Add Project</button>
+      <form action="/add_project" method="POST">
+        <input name="title" type="text" placeholder="Project Title" required />
+        <textarea name="description" rows="3" placeholder="Project Description" required></textarea>
+        <input name="goal" type="number" placeholder="Funding Goal (₹)" required />
+        <input name="imageUrl" type="url" placeholder="Project Image URL (optional)" />
+        <button type="submit">Add Project</button>
+      </form>
     </div>
   </div>
 
@@ -421,53 +411,8 @@
       });
     });
 
-    // Add Project functionality
-    const modalAddBtn = document.getElementById('modalAddBtn');
-    const titleInput = document.getElementById('projectTitle');
-    const descInput = document.getElementById('projectDesc');
-    const goalInput = document.getElementById('projectGoal');
-    const imgInput = document.getElementById('projectImg');
+    // Add project is now handled by standard form submission
 
-    modalAddBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const title = titleInput.value.trim();
-      const desc = descInput.value.trim();
-      const goal = goalInput.value.trim();
-      const imgUrl = imgInput.value.trim();
-
-      if (!title) { alert('Please enter a project title.'); titleInput.focus(); return; }
-      if (!goal || isNaN(goal) || Number(goal) <= 0) { alert('Please enter a valid funding goal (greater than 0).'); goalInput.focus(); return; }
-
-      const fallbackImg = 'https://images.unsplash.com/photo-1614850523290-9f5d10b4c358?auto=format&fit=crop&w=800&q=80';
-      const imageSrc = imgUrl || fallbackImg;
-
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <img src="${imageSrc}" alt="${escapeHtml(title)}" />
-        <div class="card-content">
-          <h3>${escapeHtml(title)}</h3>
-          <p>${escapeHtml(desc || 'No description provided.')}</p>
-          <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
-          <div class="funding"><span>₹0 raised</span><span>Goal: ₹${Number(goal).toLocaleString('en-IN')}</span></div>
-        </div>
-      `;
-
-      const cardsGrid = document.querySelector('#dashboard .cards');
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.getElementById('dashboard').classList.add('active');
-      cardsGrid?.appendChild(card);
-
-      projectModal.style.display = 'none';
-      titleInput.value = '';
-      descInput.value = '';
-      goalInput.value = '';
-      imgInput.value = '';
-
-      const newBar = card.querySelector('.progress-fill');
-      setTimeout(() => { newBar.style.width = '0%'; }, 50);
-    });
 
     function escapeHtml(text) {
       if (!text) return '';

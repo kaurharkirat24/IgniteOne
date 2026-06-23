@@ -244,12 +244,12 @@
     </div>
 
     <!-- Auth Form -->
-    <form class="auth-container" id="auth-container" onsubmit="return validateForm()">
+    <form class="auth-container" id="auth-container" action="/login" method="POST">
       <h2 id="form-title">Login to IgniteOne</h2>
-      <input type="text" id="username" placeholder="Username" required />
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <select id="role" required>
+      <input type="text" id="username" name="username" placeholder="Username" required />
+      <input type="email" id="email" name="email" placeholder="Email" required />
+      <input type="password" id="password" name="password" placeholder="Password" required />
+      <select id="role" name="role" required>
         <option value="" disabled selected>Select Role</option>
         <option value="student">Student</option>
         <option value="recruiter">Recruiter</option>
@@ -301,24 +301,7 @@
       : "Already have an account? Login";
   });
 
-  // Form validation
-  function validateForm() {
-    const username = document.getElementById("username").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const role = document.getElementById("role").value;
-
-    if (!username || !email || !password || !role) {
-      alert("All fields are mandatory!");
-      return false;
-    }
-
-    if (role === "student") window.location.href = "student_dashboard.jsp";
-    else if (role === "recruiter") window.location.href = "recruiters_dashboard.jsp";
-    else if (role === "admin") window.location.href = "admin_dashboard.jsp";
-
-    return false; // prevent actual form submission
-  }
+  // Form validation handled by standard HTML5 required attributes and backend
 </script>
 </body>
 </html>

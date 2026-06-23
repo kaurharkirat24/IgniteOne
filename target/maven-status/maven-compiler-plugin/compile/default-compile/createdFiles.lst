@@ -1,0 +1,9 @@
+com\igniteone\repository\ProjectRepository.class
+com\igniteone\IgniteOneApplication.class
+com\igniteone\controller\DashboardController.class
+com\igniteone\service\ProjectService.class
+com\igniteone\model\User.class
+com\igniteone\service\UserService.class
+com\igniteone\controller\AuthController.class
+com\igniteone\model\Project.class
+com\igniteone\repository\UserRepository.class
