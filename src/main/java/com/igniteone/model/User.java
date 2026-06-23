@@ -22,6 +22,12 @@ public class User {
     @Column(nullable = false)
     private String role; // "student", "recruiter", "admin"
 
+    @Column(nullable = false)
+    private String organization;
+
+    @Column
+    private String phoneNumber;
+
     // Default constructor
     public User() {}
 
@@ -40,4 +46,10 @@ public class User {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    public String getOrganization() { return organization; }
+    public void setOrganization(String organization) { this.organization = organization; }
+
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 }

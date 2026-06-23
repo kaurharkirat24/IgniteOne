@@ -163,7 +163,7 @@
       <li><a href="/">Home</a></li>
       <li><a href="/project_showcase">Projects</a></li>
       <li><a href="/events" class="active">Events</a></li>
-      <li><a href="login.html">Login</a></li>
+      <li><a href="/login">Login</a></li>
     </ul>
   </nav>
 

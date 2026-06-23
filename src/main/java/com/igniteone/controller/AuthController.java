@@ -24,23 +24,14 @@ public class AuthController {
     @PostMapping("/login")
     public String processLogin(@RequestParam("username") String username,
                                @RequestParam("password") String password,
-                               @RequestParam("role") String role,
-                               @RequestParam(value = "email", required = false) String email,
                                HttpSession session,
                                Model model) {
         
-        // Temporarily, we can auto-register the user if they don't exist for demo purposes
-        // or just validate
         User user = userService.authenticate(username, password);
         
         if (user == null) {
-            // Auto register for ease of use in demo
-            user = new User();
-            user.setUsername(username);
-            user.setPassword(password); // insecure, but ok for demo
-            user.setEmail(email != null && !email.isEmpty() ? email : username + "@test.com");
-            user.setRole(role);
-            user = userService.registerUser(user);
+            model.addAttribute("error", "Invalid username or password.");
+            return "login";
         }
 
         session.setAttribute("loggedInUser", user);
@@ -55,6 +46,66 @@ public class AuthController {
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping("/register")
+    public String showRegisterPage() {
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String processRegister(@RequestParam("username") String username,
+                                  @RequestParam("email") String email,
+                                  @RequestParam("password") String password,
+                                  @RequestParam("role") String role,
+                                  @RequestParam("organization") String organization,
+                                  @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
+                                  Model model) {
+        
+        // Validation
+        if (username == null || username.trim().isEmpty() ||
+            email == null || email.trim().isEmpty() ||
+            password == null || password.trim().isEmpty() ||
+            role == null || role.trim().isEmpty() ||
+            organization == null || organization.trim().isEmpty()) {
+            model.addAttribute("error", "All required fields must be filled!");
+            return "register";
+        }
+
+        if (password.length() < 6) {
+            model.addAttribute("error", "Password must be at least 6 characters long.");
+            return "register";
+        }
+
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            model.addAttribute("error", "Invalid email format.");
+            return "register";
+        }
+
+        if (userService.findByUsername(username) != null) {
+            model.addAttribute("error", "Username already exists.");
+            return "register";
+        }
+        
+        if (userService.findByEmail(email) != null) {
+            model.addAttribute("error", "Email already exists.");
+            return "register";
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password); // Insecure demo password
+        user.setRole(role);
+        user.setOrganization(organization);
+        if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {
+            user.setPhoneNumber(phoneNumber);
+        }
+        
+        userService.registerUser(user);
+
+        // Optional: you can redirect to login with a success parameter or message
+        return "redirect:/login";
     }
 
     @GetMapping("/logout")

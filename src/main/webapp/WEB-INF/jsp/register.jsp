@@ -1,9 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>IgniteOne | Login</title>
+<title>IgniteOne | Register</title>
 <style>
   * {
     margin: 0;
@@ -12,18 +13,19 @@
     font-family: "Poppins", sans-serif;
   }
   body {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #0b0d14;
-    overflow: hidden;
+    overflow-x: hidden;
     color: white;
+    padding: 20px 0;
   }
 
   /* Ambient Glowing Background Orbs */
   .bg-orb {
-    position: absolute;
+    position: fixed;
     border-radius: 50%;
     filter: blur(100px);
     z-index: 0;
@@ -44,7 +46,7 @@
     justify-content: center;
     gap: 80px;
     width: 90%;
-    max-width: 1000px;
+    max-width: 1100px;
     z-index: 10;
   }
 
@@ -151,7 +153,7 @@
     transition: transform 0.05s linear;
   }
 
-  /* Anime "Happy/Squint" Eyes when entering password */
+  /* Anime "Happy/Squint" Eyes */
   .eye.closed {
     height: 12px;
     width: 28px;
@@ -198,16 +200,16 @@
 
   /* Glassmorphism Form */
   .auth-container {
-    width: 420px;
+    width: 480px;
     background: rgba(25, 28, 36, 0.6);
     border-radius: 25px;
-    padding: 45px 40px;
+    padding: 40px 40px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255, 87, 34, 0.2);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 15px;
     position: relative;
   }
   
@@ -227,8 +229,8 @@
 
   .auth-container h2 {
     color: #fff;
-    margin-bottom: 15px;
-    font-size: 2rem;
+    margin-bottom: 5px;
+    font-size: 1.8rem;
     font-weight: 700;
     text-shadow: 0 2px 10px rgba(255, 87, 34, 0.3);
   }
@@ -244,21 +246,28 @@
     border-radius: 8px;
     text-align: center;
     font-size: 0.9rem;
-    margin-bottom: 5px;
   }
 
-  input {
+  .input-row {
+    display: flex;
+    gap: 15px;
+  }
+  .input-row > input { flex: 1; }
+
+  input, select {
     width: 100%;
-    padding: 15px 18px;
+    padding: 14px 16px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     background: rgba(0, 0, 0, 0.3);
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #fff;
     transition: all 0.3s;
   }
+  select { color: #ccc; cursor: pointer; }
+  select option { background: #191c24; color: #fff; }
   
-  input:focus {
+  input:focus, select:focus {
     background: rgba(0, 0, 0, 0.5);
     border-color: #ff5722;
     outline: none;
@@ -277,7 +286,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    margin-top: 10px;
+    margin-top: 5px;
     box-shadow: 0 8px 20px rgba(255, 87, 34, 0.3);
   }
   button:hover {
@@ -289,7 +298,7 @@
     color: #aaa;
     text-align: center;
     font-size: 0.95rem;
-    margin-top: 10px;
+    margin-top: 5px;
   }
   .toggle a { 
     color: #ff5722; 
@@ -304,6 +313,7 @@
     .container { flex-direction: column; gap: 40px; }
     .drone { transform: scale(0.8); }
     .auth-container { width: 100%; max-width: 400px; }
+    .input-row { flex-direction: column; gap: 15px; }
   }
 </style>
 </head>
@@ -326,37 +336,49 @@
       </div>
     </div>
 
-    <!-- Auth Form -->
-    <form class="auth-container" id="auth-container" action="/login" method="POST">
-      <h2 id="form-title">Login to <span>IgniteOne</span></h2>
+    <!-- Register Form -->
+    <form class="auth-container" id="auth-container" action="/register" method="POST">
+      <h2>Join <span>IgniteOne</span></h2>
       
       <% String error = (String) request.getAttribute("error"); %>
       <% if (error != null) { %>
         <div class="error-msg"><%= error %></div>
       <% } %>
 
-      <input type="text" id="username" name="username" placeholder="Username" required />
-      <input type="password" id="password" name="password" placeholder="Password" required />
+      <div class="input-row">
+        <input type="text" id="username" name="username" placeholder="Username" required />
+        <input type="email" id="email" name="email" placeholder="Email Address" required />
+      </div>
+
+      <input type="text" id="organization" name="organization" placeholder="University / School / Organization" required />
       
-      <button type="submit" id="auth-button">Login</button>
-      <div class="toggle" id="toggle">Don't have an account? <a href="/register">Register here</a></div>
+      <div class="input-row">
+        <select id="role" name="role" required>
+          <option value="" disabled selected>Select Role</option>
+          <option value="student">Student</option>
+          <option value="recruiter">Recruiter</option>
+          <option value="admin">Admin</option>
+        </select>
+        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Phone Number (Optional)" />
+      </div>
+
+      <input type="password" id="password" name="password" placeholder="Password (Min 6 chars)" minlength="6" required />
+      
+      <button type="submit">Create Account</button>
+      <div class="toggle">Already have an account? <a href="/login">Login here</a></div>
     </form>
   </div>
 
 <script>
+  // Advanced Eye Tracking
   const eyes = document.querySelectorAll(".eye");
   const droneBody = document.querySelector(".drone-body");
 
   document.addEventListener("mousemove", (e) => {
-    // Make the Parallax effect on the drone body much more prominent
-    // Calculate rotation based on mouse position relative to screen center
     const rotateY = (e.clientX - window.innerWidth / 2) / 15; 
     const rotateX = -(e.clientY - window.innerHeight / 2) / 15;
-    
-    // Apply 3D rotation and keep the transform origin centered
     droneBody.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 
-    // Advanced Pupil tracking
     eyes.forEach((eye) => {
       const pupil = eye.querySelector(".pupil");
       if (!pupil) return; 
@@ -368,7 +390,6 @@
       const dx = e.clientX - eyeCenterX;
       const dy = e.clientY - eyeCenterY;
 
-      // Allow the pupil to move further (up to 12px from center)
       const maxDistance = 10;
       const angle = Math.atan2(dy, dx);
       const distance = Math.min(maxDistance, Math.hypot(dx, dy) / 10);
@@ -384,8 +405,6 @@
   const passwordField = document.getElementById("password");
   passwordField.addEventListener("focus", () => eyes.forEach(e => e.classList.add("closed")));
   passwordField.addEventListener("blur", () => eyes.forEach(e => e.classList.remove("closed")));
-
-
 </script>
 </body>
 </html>

@@ -135,4 +135,51 @@ public class DashboardController {
         model.addAttribute("events", eventService.getAllEvents());
         return "events";
     }
+
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }
+
+    @GetMapping("/contact")
+    public String contact() {
+        return "contact";
+    }
+
+    @GetMapping("/donations")
+    public String donations(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
+        return "donations";
+    }
+
+    @GetMapping("/profile")
+    public String profile(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
+        return "profile";
+    }
+
+    @GetMapping("/project_details")
+    public String projectDetails(@RequestParam(value = "projectId", required = false) String projectId, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
+        // In the future, use the projectId to fetch dynamic project details from projectService
+        return "project_details";
+    }
+
+    @GetMapping("/register_event")
+    public String registerEvent(@RequestParam(value = "event", required = false) String event, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
+        return "register_event";
+    }
 }
