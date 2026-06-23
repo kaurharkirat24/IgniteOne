@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -170,7 +172,14 @@
   <nav>
     <div class="logo">IgniteOne</div>
     <ul>
-      <li><a href="/login" class="nav-btn">Login / Register</a></li>
+      <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+          <li><a href="/${sessionScope.loggedInUser.role}_dashboard" class="nav-btn">Dashboard</a></li>
+        </c:when>
+        <c:otherwise>
+          <li><a href="/login" class="nav-btn">Login / Register</a></li>
+        </c:otherwise>
+      </c:choose>
       <li><a href="/project_showcase" class="nav-btn">Browse Projects</a></li>
       <li><a href="/events" class="nav-btn">Events</a></li>
       <li><a href="/about" class="nav-btn">About</a></li>

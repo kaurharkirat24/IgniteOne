@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -230,10 +230,10 @@
   <!-- Main Content -->
   <div class="main-content">
     <div class="header">
-      <h1>Welcome, Recruiter 👋</h1>
+      <h1>Welcome, <c:out value="${user.username}" default="Recruiter"/> 👋</h1>
       <div class="profile">
         <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=500&q=80" alt="Recruiter">
-        <span>ABC Tech Ltd.</span>
+        <span><c:out value="${user.username}" default="Company"/></span>
       </div>
     </div>
 
@@ -252,65 +252,25 @@
 
     <!-- Projects Grid -->
     <div class="projects" id="projectList">
-      <div class="card" data-category="ai">
-        <img src="https://images.unsplash.com/photo-1581092334504-7f3c5d0b4f65?auto=format&fit=crop&w=800&q=80" alt="AI Project">
+      <c:forEach var="project" items="${projects}">
+      <div class="card" data-category="all">
+        <img src="<c:out value='${project.imageUrl}' default='https://images.unsplash.com/photo-1581092334504-7f3c5d0b4f65?auto=format&fit=crop&w=800&q=80'/>" alt="Project Image">
         <div class="card-content">
-          <h3>AI Career Recommender</h3>
-          <p>Machine learning-based system that suggests career paths based on student skills.</p>
+          <h3><c:out value="${project.title}"/></h3>
+          <p><c:out value="${project.description}"/></p>
           <div class="card-footer">
             <div class="student-info">
               <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=500&q=80" alt="student">
-              <span>Harkirat Kaur</span>
+              <span><c:out value="${project.owner != null ? project.owner.username : 'Unknown'}"/></span>
             </div>
             <button>View Profile</button>
           </div>
         </div>
       </div>
-
-      <div class="card" data-category="web">
-        <img src="https://images.unsplash.com/photo-1504805572947-34fad45aed93?auto=format&fit=crop&w=800&q=80" alt="Web Project">
-        <div class="card-content">
-          <h3>Campus Collaboration Hub</h3>
-          <p>Full-stack web platform enabling students to collaborate on academic projects.</p>
-          <div class="card-footer">
-            <div class="student-info">
-              <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=500&q=80" alt="student">
-              <span>Rohit Sharma</span>
-            </div>
-            <button>View Profile</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" data-category="iot">
-        <img src="https://images.unsplash.com/photo-1603354350317-6f7aaa5911c5?auto=format&fit=crop&w=800&q=80" alt="IoT Project">
-        <div class="card-content">
-          <h3>Smart Irrigation System</h3>
-          <p>IoT solution that optimizes water usage in farms using sensors and data analytics.</p>
-          <div class="card-footer">
-            <div class="student-info">
-              <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=500&q=80" alt="student">
-              <span>Ananya Gupta</span>
-            </div>
-            <button>View Profile</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" data-category="dbms">
-        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80" alt="Database Project">
-        <div class="card-content">
-          <h3>DataVault - Student Record System</h3>
-          <p>Secure and scalable student record management system using MySQL.</p>
-          <div class="card-footer">
-            <div class="student-info">
-              <img src="https://images.unsplash.com/photo-1603415526960-f8f0a8e8c7c5?auto=format&fit=crop&w=500&q=80" alt="student">
-              <span>Aditya Verma</span>
-            </div>
-            <button>View Profile</button>
-          </div>
-        </div>
-      </div>
+      </c:forEach>
+      <c:if test="${empty projects}">
+         <p>No projects available right now.</p>
+      </c:if>
     </div>
   </div>
 

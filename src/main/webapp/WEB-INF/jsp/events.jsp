@@ -227,7 +227,14 @@
       <li><a href="/">Home</a></li>
       <li><a href="/project_showcase">Projects</a></li>
       <li><a href="/events" class="active">Events</a></li>
-      <li><a href="/login">Login</a></li>
+      <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+          <li><a href="/${sessionScope.loggedInUser.role}_dashboard">Dashboard</a></li>
+        </c:when>
+        <c:otherwise>
+          <li><a href="/login">Login</a></li>
+        </c:otherwise>
+      </c:choose>
     </ul>
   </nav>
 
@@ -253,44 +260,23 @@
   <!-- Events Grid -->
   <div class="events" id="eventGrid">
 
-    <div class="event-card" data-type="hackathon">
-      <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Hackathon">
+    <c:forEach var="event" items="${events}">
+    <div class="event-card" data-type="event">
+      <img src="<c:out value='${event.imageUrl}' default='https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=80'/>" alt="Event">
       <div class="card-content">
-        <h3>Hackathon '25</h3>
-        <p>48-hour coding challenge where students build innovative real-world tech solutions.</p>
-        <div class="event-date" data-date="2025-12-18">📅 18 Dec 2025 | Venue: Main Auditorium</div>
+        <h3><c:out value="${event.title}"/></h3>
+        <p><c:out value="${event.description}"/></p>
+        <div class="event-date" data-date="${event.eventDate}">📅 <c:out value="${event.eventDate}"/> | Venue: <c:out value="${event.location}"/></div>
         <div class="btn-group">
-          <button class="support-btn" onclick="registerEvent('Hackathon 25')">📝 Register / Participate</button>
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Hackathon+25&dates=20251218/20251219&details=Join+us+for+a+48-hour+coding+challenge&location=Main+Auditorium" target="_blank" class="calendar-btn">📅 Add to Calendar</a>
+          <button class="support-btn" onclick="registerEvent('${event.title}')">📝 Register / Participate</button>
+          <a href="#" class="calendar-btn">📅 Add to Calendar</a>
         </div>
       </div>
     </div>
-
-    <div class="event-card" data-type="fest">
-      <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=80" alt="TechFest">
-      <div class="card-content">
-        <h3>TechFest 2025</h3>
-        <p>Our annual technology fest celebrating innovation, creativity, and collaboration.</p>
-        <div class="event-date" data-date="2025-11-12">📅 12 Nov 2025 | Venue: CS Department Grounds</div>
-        <div class="btn-group">
-          <button class="support-btn" onclick="registerEvent('TechFest 2025')">📝 Register / Participate</button>
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=TechFest+2025&dates=20251112/20251113&details=Join+the+biggest+tech+celebration+of+the+year&location=CS+Department+Grounds" target="_blank" class="calendar-btn">📅 Add to Calendar</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="event-card" data-type="workshop">
-      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Workshop">
-      <div class="card-content">
-        <h3>AI Workshop</h3>
-        <p>Hands-on session introducing machine learning basics and real-world project building.</p>
-        <div class="event-date" data-date="2025-10-27">📅 27 Oct 2025 | Venue: Lab 3</div>
-        <div class="btn-group">
-          <button class="support-btn" onclick="registerEvent('AI Workshop')">📝 Register / Participate</button>
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=AI+Workshop&dates=20251027/20251028&details=Hands-on+machine+learning+session&location=Lab+3" target="_blank" class="calendar-btn">📅 Add to Calendar</a>
-        </div>
-      </div>
-    </div>
+    </c:forEach>
+    <c:if test="${empty events}">
+       <p style="text-align:center; width: 100%;">No events available right now.</p>
+    </c:if>
 
   </div>
 

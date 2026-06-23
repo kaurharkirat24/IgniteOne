@@ -258,7 +258,14 @@
       <li><a href="/">Home</a></li>
       <li><a href="/project_showcase">Projects</a></li>
       <li><a href="/events">Events</a></li>
-      <li><a href="/login">Login</a></li>
+      <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+          <li><a href="/${sessionScope.loggedInUser.role}_dashboard">Dashboard</a></li>
+        </c:when>
+        <c:otherwise>
+          <li><a href="/login">Login</a></li>
+        </c:otherwise>
+      </c:choose>
     </ul>
   </nav>
 

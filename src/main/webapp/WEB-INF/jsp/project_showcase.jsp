@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -260,7 +260,14 @@
       <li><a href="/">Home</a></li>
       <li><a href="/project_showcase" class="active">Projects</a></li>
       <li><a href="/events">Events</a></li>
-      <li><a href="/login">Login</a></li>
+      <c:choose>
+        <c:when test="${not empty sessionScope.loggedInUser}">
+          <li><a href="/${sessionScope.loggedInUser.role}_dashboard">Dashboard</a></li>
+        </c:when>
+        <c:otherwise>
+          <li><a href="/login">Login</a></li>
+        </c:otherwise>
+      </c:choose>
     </ul>
   </nav>
 

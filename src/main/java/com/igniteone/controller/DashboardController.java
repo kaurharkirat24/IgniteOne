@@ -3,6 +3,9 @@ package com.igniteone.controller;
 import com.igniteone.model.Project;
 import com.igniteone.model.User;
 import com.igniteone.service.ProjectService;
+import com.igniteone.service.UserService;
+import com.igniteone.service.EventService;
+import com.igniteone.service.DonationService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +25,15 @@ public class DashboardController {
     private ProjectService projectService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EventService eventService;
+
+    @Autowired
+    private DonationService donationService;
+
+    @Autowired
     private S3FileUploadService s3FileUploadService;
 
     @GetMapping("/")
@@ -37,8 +49,23 @@ public class DashboardController {
         }
         
         List<Project> projects = projectService.getAllProjects(); // For now showing all
+        
+        List<Project> userProjects = projects.stream()
+                .filter(p -> p.getOwner() != null && p.getOwner().getId().equals(user.getId()))
+                .toList();
+                
+        double totalRaised = userProjects.stream()
+                .mapToDouble(p -> p.getCurrentFunding() != null ? p.getCurrentFunding() : 0.0).sum();
+        double totalGoal = userProjects.stream()
+                .mapToDouble(p -> p.getFundingGoal() != null ? p.getFundingGoal() : 0.0).sum();
+        int progressPercentage = totalGoal > 0 ? (int) ((totalRaised / totalGoal) * 100) : 0;
+
         model.addAttribute("user", user);
         model.addAttribute("projects", projects);
+        model.addAttribute("userProjectsCount", userProjects.size());
+        model.addAttribute("totalRaised", totalRaised);
+        model.addAttribute("totalGoal", totalGoal);
+        model.addAttribute("progressPercentage", progressPercentage);
         
         return "student_dashboard";
     }
@@ -76,5 +103,36 @@ public class DashboardController {
         List<Project> projects = projectService.getAllProjects();
         model.addAttribute("projects", projects);
         return "project_showcase";
+    }
+
+    @GetMapping("/recruiters_dashboard")
+    public String recruitersDashboard(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null || !"recruiter".equalsIgnoreCase(user.getRole())) {
+            return "redirect:/login";
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("projects", projectService.getAllProjects());
+        return "recruiters_dashboard";
+    }
+
+    @GetMapping("/admin_dashboard")
+    public String adminDashboard(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+            return "redirect:/login";
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("projects", projectService.getAllProjects());
+        model.addAttribute("events", eventService.getAllEvents());
+        model.addAttribute("donations", donationService.getAllDonations());
+        return "admin_dashboard";
+    }
+
+    @GetMapping("/events")
+    public String events(Model model) {
+        model.addAttribute("events", eventService.getAllEvents());
+        return "events";
     }
 }

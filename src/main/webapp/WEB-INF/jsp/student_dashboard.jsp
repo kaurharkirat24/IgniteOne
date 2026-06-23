@@ -319,14 +319,14 @@
     <!-- My Projects Section -->
     <section id="my-projects" class="section">
       <h2>My Projects</h2>
-      <p>You have submitted 3 projects for funding. Keep up the good work!</p>
+      <p>You have submitted ${userProjectsCount} project(s) for funding. Keep up the good work!</p>
     </section>
 
     <!-- Funding Section -->
     <section id="funding" class="section">
       <h2>Funding Overview</h2>
-      <p><strong>Total Raised:</strong> ₹21,000<br><strong>Goal:</strong> ₹30,000</p>
-      <p>You're 70% of the way there — great progress!</p>
+      <p><strong>Total Raised:</strong> ₹${totalRaised}<br><strong>Goal:</strong> ₹${totalGoal}</p>
+      <p>You're ${progressPercentage}% of the way there — great progress!</p>
     </section>
 
     <!-- Notifications Section -->
@@ -342,9 +342,9 @@
     <!-- Profile Section -->
     <section id="profile" class="section">
       <h2>My Profile</h2>
-      <p><strong>Name:</strong> Harkirat Kaur</p>
-      <p><strong>Role:</strong> Student</p>
-      <p><strong>Email:</strong> harkirat@igniteone.edu</p>
+      <p><strong>Name:</strong> ${user.username}</p>
+      <p><strong>Role:</strong> ${user.role}</p>
+      <p><strong>Email:</strong> ${user.email}</p>
     </section>
 
     <!-- Logout Section -->

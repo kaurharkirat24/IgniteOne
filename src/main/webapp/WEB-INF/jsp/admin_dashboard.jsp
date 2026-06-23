@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -265,9 +265,18 @@
       <h2>User Management</h2>
       <table>
         <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Action</th></tr>
-        <tr><td>Harkirat Kaur</td><td>harkirat@pu.ac.in</td><td>Student</td><td><span class="status active">Active</span></td><td><button class="action">Ban</button></td></tr>
-        <tr><td>Rohit Sharma</td><td>rohit@pu.ac.in</td><td>Student</td><td><span class="status banned">Banned</span></td><td><button class="action">Unban</button></td></tr>
-        <tr><td>Jasleen Kaur</td><td>jasleen@pu.ac.in</td><td>Recruiter</td><td><span class="status pending">Pending</span></td><td><button class="action">Approve</button></td></tr>
+        <c:forEach var="u" items="${users}">
+        <tr>
+          <td><c:out value="${u.username}"/></td>
+          <td><c:out value="${u.email}"/></td>
+          <td><c:out value="${u.role}"/></td>
+          <td><span class="status active">Active</span></td>
+          <td><button class="action">Ban</button></td>
+        </tr>
+        </c:forEach>
+        <c:if test="${empty users}">
+          <tr><td colspan="5">No users found.</td></tr>
+        </c:if>
       </table>
     </div>
 
@@ -276,8 +285,18 @@
       <h2>Project Approval</h2>
       <table>
         <tr><th>Project Title</th><th>Student</th><th>Category</th><th>Status</th><th>Action</th></tr>
-        <tr><td>AI Career Recommender</td><td>Harkirat Kaur</td><td>AI/ML</td><td><span class="status pending">Pending</span></td><td><button class="action">Approve</button></td></tr>
-        <tr><td>Smart Irrigation System</td><td>Ananya Gupta</td><td>IoT</td><td><span class="status active">Approved</span></td><td><button class="action">Revoke</button></td></tr>
+        <c:forEach var="p" items="${projects}">
+        <tr>
+          <td><c:out value="${p.title}"/></td>
+          <td><c:out value="${p.owner != null ? p.owner.username : 'N/A'}"/></td>
+          <td>Tech</td>
+          <td><span class="status pending">Pending</span></td>
+          <td><button class="action">Approve</button></td>
+        </tr>
+        </c:forEach>
+        <c:if test="${empty projects}">
+          <tr><td colspan="5">No projects found.</td></tr>
+        </c:if>
       </table>
     </div>
 
@@ -286,8 +305,18 @@
       <h2>Donation Tracking</h2>
       <table>
         <tr><th>Donor</th><th>Project</th><th>Amount (₹)</th><th>Date</th><th>Status</th></tr>
-        <tr><td>Rahul Mehta</td><td>Campus Event Portal</td><td>₹500</td><td>22 Oct 2025</td><td><span class="status active">Verified</span></td></tr>
-        <tr><td>Sneha Kapoor</td><td>AI Chatbot</td><td>₹1000</td><td>21 Oct 2025</td><td><span class="status pending">Pending</span></td></tr>
+        <c:forEach var="d" items="${donations}">
+        <tr>
+          <td><c:out value="${d.donor != null ? d.donor.username : 'Anonymous'}"/></td>
+          <td><c:out value="${d.project != null ? d.project.title : 'N/A'}"/></td>
+          <td>₹<c:out value="${d.amount}"/></td>
+          <td>Today</td>
+          <td><span class="status active">Verified</span></td>
+        </tr>
+        </c:forEach>
+        <c:if test="${empty donations}">
+          <tr><td colspan="5">No donations found.</td></tr>
+        </c:if>
       </table>
       <br><button class="action" id="exportBtn">Export Report</button>
     </div>
@@ -297,8 +326,17 @@
       <h2>Event Showcase</h2>
       <table>
         <tr><th>Event Name</th><th>Date</th><th>Status</th><th>Action</th></tr>
-        <tr><td>TechFest 2025</td><td>12 Nov 2025</td><td><span class="status active">Active</span></td><td><button class="action" onclick="openModal()">Edit</button></td></tr>
-        <tr><td>Hackathon '25</td><td>18 Dec 2025</td><td><span class="status pending">Upcoming</span></td><td><button class="action" onclick="openModal()">Edit</button></td></tr>
+        <c:forEach var="e" items="${events}">
+        <tr>
+          <td><c:out value="${e.title}"/></td>
+          <td><c:out value="${e.eventDate}"/></td>
+          <td><span class="status active">Active</span></td>
+          <td><button class="action" onclick="openModal()">Edit</button></td>
+        </tr>
+        </c:forEach>
+        <c:if test="${empty events}">
+          <tr><td colspan="4">No events found.</td></tr>
+        </c:if>
       </table>
       <br><button class="action" onclick="openModal()">+ Add Event</button>
     </div>
