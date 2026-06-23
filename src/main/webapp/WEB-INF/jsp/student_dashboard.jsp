@@ -362,11 +362,12 @@
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
       <h3>Add New Project</h3>
-      <form action="/add_project" method="POST">
+      <form action="/add_project" method="POST" enctype="multipart/form-data">
         <input name="title" type="text" placeholder="Project Title" required />
         <textarea name="description" rows="3" placeholder="Project Description" required></textarea>
         <input name="goal" type="number" placeholder="Funding Goal (₹)" required />
-        <input name="imageUrl" type="url" placeholder="Project Image URL (optional)" />
+        <label style="font-size: 0.9rem; margin-bottom: 5px; display: block; color: #555;">Upload Project Image (S3)</label>
+        <input name="image" type="file" accept="image/*" />
         <button type="submit">Add Project</button>
       </form>
     </div>

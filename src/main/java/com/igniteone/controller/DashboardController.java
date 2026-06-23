@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import com.igniteone.service.S3FileUploadService;
 
 import java.util.List;
 
@@ -18,6 +20,9 @@ public class DashboardController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private S3FileUploadService s3FileUploadService;
 
     @GetMapping("/")
     public String home() {
@@ -42,7 +47,7 @@ public class DashboardController {
     public String addProject(@RequestParam("title") String title,
                              @RequestParam("description") String description,
                              @RequestParam("goal") Double goal,
-                             @RequestParam("imageUrl") String imageUrl,
+                             @RequestParam(value = "image", required = false) MultipartFile image,
                              HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
         if (user != null && "student".equalsIgnoreCase(user.getRole())) {
@@ -50,7 +55,16 @@ public class DashboardController {
             p.setTitle(title);
             p.setDescription(description);
             p.setFundingGoal(goal);
-            p.setImageUrl(imageUrl);
+            
+            try {
+                if (image != null && !image.isEmpty()) {
+                    String imageUrl = s3FileUploadService.uploadFile(image);
+                    p.setImageUrl(imageUrl);
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); // In production, add proper error handling
+            }
+            
             p.setOwner(user);
             projectService.saveProject(p);
         }
