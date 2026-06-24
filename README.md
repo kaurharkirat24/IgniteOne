@@ -4,18 +4,20 @@
 
 ## 🌟 Key Features
 
-*   **💡 Project Showcasing:** Students can upload their project details, media, and tech stack, allowing the world to see their innovation.
-*   **💰 Crowdfunding:** Receive small donations from peers, alumni, and sponsors to bring ideas to life.
-*   **🎯 Recruiter Connect:** Companies can browse projects and connect with students for internships and career opportunities.
-*   **🤝 Alumni Mentorship:** Alumni can fund or mentor projects, strengthening the bond within the campus community.
-*   **📊 Role-Based Dashboards:** Dedicated dashboards for Students, Recruiters, and Administrators.
+*   **💡 Project Showcasing:** Students can upload their project details, media, and tech stack, allowing the world to see their innovation. Images are securely hosted on AWS S3.
+*   **💰 Dynamic Crowdfunding:** Process real donations from peers, alumni, and sponsors that dynamically update project funding goals in real-time.
+*   **🎯 Recruiter Connect:** Companies can browse projects, search by categories (AI, IoT, Web), and connect with students for internships and career opportunities.
+*   **📅 Event Registrations:** Discover department fests, hackathons, and easily register with a single click.
+*   **📊 Role-Based Dashboards:** Secure, intercepted dashboards for Students, Recruiters, and Administrators.
+*   **👤 Custom Profiles:** Users can update their personal information, organizations, and "About Me" biographies.
 
 ## 🛠️ Tech Stack
 
-*   **Frontend:** HTML5, CSS3, JSP (JavaServer Pages)
-*   **Backend:** Java (Servlets/JSP architecture)
-*   **Database:** MariaDB (via JDBC)
-*   **IDE Support:** Eclipse (Native `.project` and `.classpath` configuration included)
+*   **Frontend:** HTML5, CSS3, JSP (JavaServer Pages), JSTL, Vanilla JavaScript
+*   **Backend:** Java 17, Spring Boot 3, Spring MVC, Spring Data JPA, Hibernate
+*   **Database:** MySQL (JDBC)
+*   **Cloud Storage:** Amazon S3 (AWS SDK for Java)
+*   **Build Tool:** Maven
 
 ## 🚀 Getting Started
 
@@ -23,62 +25,70 @@ Follow these instructions to get the project up and running on your local machin
 
 ### Prerequisites
 
-*   **Java Development Kit (JDK):** Version 8 or higher.
-*   **Web Server:** Apache Tomcat (version 9+ recommended).
-*   **Database:** MariaDB Server.
-*   **IDE:** Eclipse IDE for Enterprise Java and Web Developers (recommended).
+*   **Java Development Kit (JDK):** Version 17 or higher.
+*   **Maven:** Installed and configured in your system PATH.
+*   **Database:** MySQL Server.
+*   **AWS Account:** For S3 Image Uploads.
 
-### Database Setup
+### Environment & Database Setup
 
-1.  Ensure your MariaDB server is running.
+1.  Ensure your MySQL server is running.
 2.  Create a new database named `igniteone_db`:
     ```sql
     CREATE DATABASE igniteone_db;
     ```
-3.  The application connects using the default credentials. If your MariaDB setup uses different credentials, update `src/main/java/com/igniteone/dao/DBConnection.java`:
-    ```java
-    private static final String URL = "jdbc:mariadb://localhost:3306/igniteone_db";
-    private static final String USER = "root";  
-    private static final String PASSWORD = "root"; 
+3.  Create a `.env` file in the root directory (`IgniteOne/.env`) to configure your secure environment variables:
+    ```env
+    MYSQL_PASSWORD=your_mysql_password
+    AWS_ACCESS_KEY_ID=your_aws_key
+    AWS_SECRET_ACCESS_KEY=your_aws_secret
+    AWS_REGION=your_aws_region
+    AWS_S3_BUCKET=your_s3_bucket_name
     ```
-4.  *(Note: You may need to create the required tables depending on the DB schema. Check the source files or provided SQL scripts if available).*
+4.  *(Note: Hibernate `ddl-auto=update` is enabled in `application.properties`, meaning the application will automatically create all necessary database tables for you upon startup!).*
 
 ### Installation & Execution
 
 1.  **Clone / Download** the repository to your local machine.
-2.  **Import into Eclipse:**
-    *   Open Eclipse and navigate to `File -> Import`.
-    *   Select `General -> Existing Projects into Workspace`.
-    *   Browse to the directory where you cloned/downloaded IgniteOne and select it.
-    *   Click `Finish`.
-3.  **Add Server Runtime:**
-    *   Right-click the project in the Project Explorer -> `Properties` -> `Targeted Runtimes`.
-    *   Select your Apache Tomcat server.
-4.  **Run the Project:**
-    *   Right-click the project -> `Run As` -> `Run on Server`.
-    *   Select your Tomcat server and click `Finish`.
-    *   The application should launch in your default browser at `http://localhost:8080/IgniteOne/` (or similar depending on your Tomcat config).
+2.  **Open Terminal / Command Prompt** and navigate to the project root directory.
+3.  **Compile the Project:**
+    ```bash
+    mvn clean compile
+    ```
+4.  **Run the Spring Boot Application:**
+    ```bash
+    mvn spring-boot:run
+    ```
+5.  **Access the Application:**
+    *   The application will launch with an embedded Tomcat server. Open your browser and navigate to `http://localhost:8080`.
 
 ## 📁 Project Structure
 
 ```text
 IgniteOne/
 ├── src/
-│   └── main/
-│       ├── java/
-│       │   └── com/igniteone/dao/      # Database Connection and DAO layer
-│       │       └── DBConnection.java
-│       └── webapp/                     # Frontend JSP, HTML, CSS files
-│           ├── index.html              # Main Landing Page
-│           ├── login.jsp               # Authentication Page
-│           ├── student_dashboard.jsp   # Student Portal
-│           ├── recruiters_dashboard.jsp# Recruiter Portal
-│           ├── admin_dashboard.jsp     # Admin Portal
-│           ├── project_showcase.jsp    # Browse Projects
-│           ├── project_details.jsp     # Individual Project View
-│           ├── events.jsp              # Event Listing
-│           ├── donations.jsp           # Crowdfunding Page
-│           └── ...
+│   ├── main/
+│   │   ├── java/com/igniteone/
+│   │   │   ├── config/          # Spring MVC & Interceptor Configurations
+│   │   │   ├── controller/      # Spring MVC Controllers (DashboardController, AuthController)
+│   │   │   ├── interceptor/     # Security Interceptors (AuthInterceptor)
+│   │   │   ├── model/           # JPA Entities (User, Project, Event, Donation)
+│   │   │   ├── repository/      # Spring Data JPA Interfaces
+│   │   │   └── service/         # Business Logic & AWS S3 Uploads
+│   │   │
+│   │   ├── resources/           
+│   │   │   └── application.properties # Spring Boot configuration
+│   │   │
+│   │   └── webapp/WEB-INF/jsp/  # Frontend Views
+│   │       ├── index.jsp              # Main Landing Page
+│   │       ├── login.jsp / register.jsp # Authentication
+│   │       ├── student_dashboard.jsp  # Student Portal
+│   │       ├── recruiters_dashboard.jsp# Recruiter Portal
+│   │       ├── project_showcase.jsp   # Browse Projects
+│   │       └── ...
+│   │
+├── pom.xml                      # Maven Dependencies
+└── .env                         # Environment Variables (Ignored by Git)
 ```
 
 ## 👥 Authors
@@ -87,4 +97,4 @@ IgniteOne/
 *   **Ashutosh**
 
 ---
-© 2025 IgniteOne. All rights reserved.
+© 2026 IgniteOne. All rights reserved.

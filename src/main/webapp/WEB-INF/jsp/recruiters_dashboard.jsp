@@ -217,7 +217,7 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <h2>IgniteOne</h2>
-    <a href="#" class="active">Dashboard</a>
+    <a href="/recruiters_dashboard" class="active">Dashboard</a>
     <a href="/">Home</a>
     <a href="/project_showcase">Browse Projects</a>
     <a href="#">Search Talent</a>

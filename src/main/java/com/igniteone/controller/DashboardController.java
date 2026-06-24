@@ -165,9 +165,6 @@ public class DashboardController {
                                   @RequestParam("amount") Double amount,
                                   HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) {
-            return "redirect:/login";
-        }
         donationService.processDonation(projectId, user, amount);
         return "redirect:/donations?success=true";
     }
@@ -187,9 +184,6 @@ public class DashboardController {
                                 @RequestParam(value = "aboutMe", required = false) String aboutMe,
                                 HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) {
-            return "redirect:/login";
-        }
         // Assuming we are updating the current user object in session
         user.setEmail(email);
         user.setOrganization(organization);
@@ -224,9 +218,6 @@ public class DashboardController {
     @PostMapping("/register_event_submit")
     public String registerEventSubmit(@RequestParam("eventId") Long eventId, HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) {
-            return "redirect:/login";
-        }
         eventRegistrationService.registerForEvent(eventId, user);
         return "redirect:/events?success=true";
     }
