@@ -3,7 +3,9 @@ package com.igniteone.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "projects")
+@Table(name = "projects", indexes = {
+    @Index(name = "idx_project_owner", columnList = "user_id")
+})
 public class Project {
 
     @Id
