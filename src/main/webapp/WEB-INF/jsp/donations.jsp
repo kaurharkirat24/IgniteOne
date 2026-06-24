@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -232,17 +233,16 @@
     <h1>Support a Project 💡</h1>
     <p>Your small contribution can make a big impact. Help students innovate and grow!</p>
 
-    <form id="donationForm">
-      <input type="text" id="donorName" placeholder="Your Name" required>
-      <input type="email" id="donorEmail" placeholder="Email Address" required>
-      <select id="projectSelect" required>
+    <form id="donationForm" action="/donate" method="POST">
+      <input type="text" id="donorName" placeholder="Your Name" value="${user != null ? user.username : ''}" required>
+      <input type="email" id="donorEmail" placeholder="Email Address" value="${user != null ? user.email : ''}" required>
+      <select id="projectSelect" name="projectId" required>
         <option value="">Select Project</option>
-        <option value="ai_career">AI Career Recommender</option>
-        <option value="iot_irrigation">Smart Irrigation System</option>
-        <option value="web_portal">Campus Collaboration Hub</option>
-        <option value="dbms_tool">DataVault - Student Records</option>
+        <c:forEach var="project" items="${projects}">
+          <option value="${project.id}">${project.title}</option>
+        </c:forEach>
       </select>
-      <input type="number" id="amount" placeholder="Donation Amount (₹)" required min="10">
+      <input type="number" id="amount" name="amount" placeholder="Donation Amount (₹)" required min="10">
       <button type="submit">Proceed to Payment</button>
     </form>
 
@@ -276,6 +276,11 @@
         loader.style.display = "none";
         thankYou.style.display = "block";
         launchConfetti();
+        
+        // Actually submit the form to backend after showing celebration
+        setTimeout(() => {
+          form.submit();
+        }, 2000);
       }, 2500);
     });
 

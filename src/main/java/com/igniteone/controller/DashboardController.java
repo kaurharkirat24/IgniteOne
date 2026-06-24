@@ -6,6 +6,7 @@ import com.igniteone.service.ProjectService;
 import com.igniteone.service.UserService;
 import com.igniteone.service.EventService;
 import com.igniteone.service.DonationService;
+import com.igniteone.service.EventRegistrationService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ public class DashboardController {
 
     @Autowired
     private DonationService donationService;
+
+    @Autowired
+    private EventRegistrationService eventRegistrationService;
 
     @Autowired
     private S3FileUploadService s3FileUploadService;
@@ -152,7 +156,20 @@ public class DashboardController {
         if (user != null) {
             model.addAttribute("user", user);
         }
+        model.addAttribute("projects", projectService.getAllProjects());
         return "donations";
+    }
+
+    @PostMapping("/donate")
+    public String processDonation(@RequestParam("projectId") Long projectId,
+                                  @RequestParam("amount") Double amount,
+                                  HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        donationService.processDonation(projectId, user, amount);
+        return "redirect:/donations?success=true";
     }
 
     @GetMapping("/profile")
@@ -162,6 +179,24 @@ public class DashboardController {
             model.addAttribute("user", user);
         }
         return "profile";
+    }
+
+    @PostMapping("/profile/update")
+    public String updateProfile(@RequestParam("email") String email,
+                                @RequestParam("organization") String organization,
+                                @RequestParam(value = "aboutMe", required = false) String aboutMe,
+                                HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        // Assuming we are updating the current user object in session
+        user.setEmail(email);
+        user.setOrganization(organization);
+        user.setAboutMe(aboutMe);
+        userService.registerUser(user); // Reuse registerUser for saving updates
+        session.setAttribute("loggedInUser", user);
+        return "redirect:/profile?success=true";
     }
 
     @GetMapping("/project_details")
@@ -175,11 +210,24 @@ public class DashboardController {
     }
 
     @GetMapping("/register_event")
-    public String registerEvent(@RequestParam(value = "event", required = false) String event, HttpSession session, Model model) {
+    public String registerEvent(@RequestParam(value = "event", required = false) String event, 
+                                @RequestParam(value = "eventId", required = false) Long eventId,
+                                HttpSession session, Model model) {
         User user = (User) session.getAttribute("loggedInUser");
         if (user != null) {
             model.addAttribute("user", user);
         }
+        model.addAttribute("eventId", eventId);
         return "register_event";
+    }
+
+    @PostMapping("/register_event_submit")
+    public String registerEventSubmit(@RequestParam("eventId") Long eventId, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        eventRegistrationService.registerForEvent(eventId, user);
+        return "redirect:/events?success=true";
     }
 }

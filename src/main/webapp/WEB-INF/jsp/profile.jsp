@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -265,31 +266,26 @@
       <div class="left-panel-content">
         <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80"
              alt="Profile Picture" class="profile-pic">
-        <h2>Harkirat Kaur</h2>
-        <p>Computer Science | Panjab University</p>
+        <h2>${user != null ? user.username : 'User'}</h2>
+        <p>${user != null ? user.organization : ''}</p>
       </div>
     </div>
 
     <!-- RIGHT PANEL -->
     <div class="right-panel">
       <h3>My Profile</h3>
-      <form>
-        <label>Full Name</label>
-        <input type="text" value="Harkirat Kaur" required>
+      <form action="/profile/update" method="POST">
+        <label>Full Name (Username)</label>
+        <input type="text" value="${user != null ? user.username : ''}" readonly>
 
         <label>Email</label>
-        <input type="email" value="harkirat@pu.ac.in" required>
+        <input type="email" name="email" value="${user != null ? user.email : ''}" required>
 
-        <label>Department</label>
-        <select>
-          <option selected>Computer Science</option>
-          <option>Information Technology</option>
-          <option>Electronics</option>
-          <option>Mechanical</option>
-        </select>
+        <label>Department / Organization</label>
+        <input type="text" name="organization" value="${user != null ? user.organization : ''}" required>
 
         <label>About Me</label>
-        <textarea rows="3">Passionate developer and researcher focused on AI and community innovation.</textarea>
+        <textarea rows="3" name="aboutMe">${user != null ? user.aboutMe : ''}</textarea>
 
         <button type="submit" class="update-btn">Update Profile</button>
       </form>
@@ -314,13 +310,6 @@
   </div>
 
   <script>
-    // Profile form submit simulation
-    const form = document.querySelector("form");
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      alert("Profile updated successfully!");
-    });
-
     // Tabs functionality
     const tabs = document.querySelectorAll(".tab");
     const contents = document.querySelectorAll(".tab-content");

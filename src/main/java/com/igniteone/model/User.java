@@ -28,6 +28,9 @@ public class User {
     @Column
     private String phoneNumber;
 
+    @Column(length = 1000)
+    private String aboutMe;
+
     // Default constructor
     public User() {}
 
@@ -52,4 +55,7 @@ public class User {
 
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+
+    public String getAboutMe() { return aboutMe; }
+    public void setAboutMe(String aboutMe) { this.aboutMe = aboutMe; }
 }

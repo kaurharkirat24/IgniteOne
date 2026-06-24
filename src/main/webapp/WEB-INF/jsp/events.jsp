@@ -268,7 +268,7 @@
         <p><c:out value="${event.description}"/></p>
         <div class="event-date" data-date="${event.eventDate}">📅 <c:out value="${event.eventDate}"/> | Venue: <c:out value="${event.location}"/></div>
         <div class="btn-group">
-          <button class="support-btn" onclick="registerEvent('${event.title}')">📝 Register / Participate</button>
+          <button class="support-btn" onclick="registerEvent('${event.id}', '${event.title}')">📝 Register / Participate</button>
           <a href="#" class="calendar-btn">📅 Add to Calendar</a>
         </div>
       </div>
@@ -323,8 +323,8 @@
       });
     }
 
-    function registerEvent(name) {
-      window.location.href = "register_event.jsp?event=" + encodeURIComponent(name);
+    function registerEvent(id, name) {
+      window.location.href = "/register_event?eventId=" + id + "&event=" + encodeURIComponent(name);
     }
   </script>
 </body>

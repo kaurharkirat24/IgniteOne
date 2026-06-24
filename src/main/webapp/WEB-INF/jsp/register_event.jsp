@@ -172,8 +172,9 @@
     <h1 id="eventTitle">Event Registration</h1>
     <p>Fill in your details to participate in this exciting event!</p>
 
-    <form id="registerForm" onsubmit="return handleSubmit(event)">
+    <form id="registerForm" action="/register_event_submit" method="POST" onsubmit="return handleSubmit(event)">
       <input type="hidden" id="eventName" name="eventName">
+      <input type="hidden" name="eventId" value="${eventId}">
 
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" placeholder="Enter your full name" required>
@@ -227,8 +228,6 @@
 
     // Form submission handling
     function handleSubmit(e) {
-      e.preventDefault();
-
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const dept = document.getElementById('dept').value;
@@ -236,12 +235,12 @@
 
       if (!name || !email || !dept || !year) {
         alert("⚠️ Please fill all required fields!");
+        e.preventDefault();
         return false;
       }
 
-      alert("✅ Registration Successful!\n\nThank you, " + name + ", for registering for " + eventName + ".");
-      window.location.href = "events.jsp";
-      return false;
+      alert("✅ Request processing...\n\nThank you, " + name + "!");
+      return true; // Allow standard form submission
     }
   </script>
 </body>
