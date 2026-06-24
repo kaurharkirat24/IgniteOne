@@ -95,7 +95,7 @@ public class AuthController {
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
-        user.setPassword(password); // Insecure demo password
+        user.setPassword(password); // Will be hashed securely by UserService
         user.setRole(role);
         user.setOrganization(organization);
         if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {

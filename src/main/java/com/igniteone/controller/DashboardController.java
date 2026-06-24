@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.igniteone.service.S3FileUploadService;
 
 import java.util.List;
 
 @Controller
 public class DashboardController {
+
+    private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
     @Autowired
     private ProjectService projectService;
@@ -52,11 +57,9 @@ public class DashboardController {
             return "redirect:/login";
         }
         
-        List<Project> projects = projectService.getAllProjects(); // For now showing all
+        List<Project> projects = projectService.getAllProjects(); // For public showcase logic
         
-        List<Project> userProjects = projects.stream()
-                .filter(p -> p.getOwner() != null && p.getOwner().getId().equals(user.getId()))
-                .toList();
+        List<Project> userProjects = projectService.getProjectsByUserId(user.getId());
                 
         double totalRaised = userProjects.stream()
                 .mapToDouble(p -> p.getCurrentFunding() != null ? p.getCurrentFunding() : 0.0).sum();
@@ -79,7 +82,8 @@ public class DashboardController {
                              @RequestParam("description") String description,
                              @RequestParam("goal") Double goal,
                              @RequestParam(value = "image", required = false) MultipartFile image,
-                             HttpSession session) {
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("loggedInUser");
         if (user != null && "student".equalsIgnoreCase(user.getRole())) {
             Project p = new Project();
@@ -93,11 +97,13 @@ public class DashboardController {
                     p.setImageUrl(imageUrl);
                 }
             } catch (Exception e) {
-                e.printStackTrace(); // In production, add proper error handling
+                logger.error("Failed to upload project image to S3", e);
+                redirectAttributes.addFlashAttribute("error", "Failed to upload image. Project saved without an image.");
             }
             
             p.setOwner(user);
             projectService.saveProject(p);
+            redirectAttributes.addFlashAttribute("success", "Project successfully created!");
         }
         return "redirect:/student_dashboard";
     }
